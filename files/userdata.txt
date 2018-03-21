@@ -1,0 +1,5 @@
+#!/bin/bash
+set -ex
+apt update
+apt-get install -y python-pip
+pip install locust
