@@ -7,7 +7,7 @@ for region in regions:
     autoscale_conn = boto.ec2.autoscale.connect_to_region(region)
 
     try:
-        ag = autoscale_conn.get_all_groups(names=['pywebdev_as_group2'])[0]
+        ag = autoscale_conn.get_all_groups(names=['pywebdev_as_group'])[0]
     except IndexError:
         print(region, " No ASG to cleanup")
         continue
@@ -21,7 +21,7 @@ for region in regions:
     print('Deleting ASG')
     try:
         ag.delete()
-    except ResponseError as e:
+    except BotoServerError as e:
         if e.response['Error']['Code'] == "ScalingActivityInProgress":
             print("Scaling activity already in process, retrying")
             retries = 3
@@ -40,8 +40,11 @@ for region in regions:
             print("Unexpected error: {}".format(e))
     time.sleep(20)
 
+for region in regions:
+    autoscale_conn = boto.ec2.autoscale.connect_to_region(region)
+
     # Now get the Launch Configuration
-    lc = autoscale_conn.get_all_launch_configurations(names=['pywebdev_launch_config3'])[0]
+    lc = autoscale_conn.get_all_launch_configurations(names=['pywebdev_launch_config'])[0]
     print(region, " PyWebDev LC: ", lc)
 
     lc.delete()

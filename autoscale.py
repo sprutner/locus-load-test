@@ -1,6 +1,4 @@
-import boto.ec2.autoscale
-from boto.ec2.autoscale import LaunchConfiguration
-from boto.ec2.autoscale import AutoScalingGroup
+import boto3
 
 regions = ['us-east-1', 'us-west-1', 'ap-south-1']
 amis = {'us-east-1': 'ami-43a15f3e', 'us-west-1': 'ami-925144f2', 'ap-south-1': 'ami-0189d76e'}
@@ -13,22 +11,20 @@ azs = {'us-east-1': ['us-east-1a', 'us-east-1b', 'us-east-1c'], 'us-west-1': ['u
 # 3. Triggers
 
 for region in regions:
-    autoscale_conn = boto.ec2.autoscale.connect_to_region(region)
+    autoscale_conn = boto3.client('autoscaling',region_name=region)
     # First setup a Launch Configuration
     f = open('./files/userdata.txt')
-    lc = LaunchConfiguration(name='pywebdev_launch_config3', image_id=amis[region],
-                                 instance_type='t2.micro', # defaults to m1.small
-                                 key_name='seth',
-                                 user_data=f.read(), # Reads userdata.txt
-                                 security_groups=['default'])
-    result = autoscale_conn.create_launch_configuration(lc)
-    print(region, ' Launch Configuration Creation Result: ', result)
+    lc = autoscale_conn.create_launch_configuration(LaunchConfigurationName='pywebdev_launch_config', ImageId=amis[region],
+                                 InstanceType='t2.micro', # defaults to m1.small
+                                 KeyName='seth',
+                                 UserData=f.read(), # Reads userdata.txt
+                                 SecurityGroups=['default'])
+
+    print(region, ' Launch Configuration Creation Result: ', lc['ResponseMetadata']['HTTPStatusCode'])
     f.close()
 
     # Now we have a Launch Configuration and an ELB.  Create and launch the AutoScalingGroup
-    ag = AutoScalingGroup(group_name='pywebdev_as_group2',
-                              availability_zones=azs[region],
-                              launch_config=lc, min_size=2, max_size=4,
-                              connection=autoscale_conn)
-    result = autoscale_conn.create_auto_scaling_group(ag)
-    print(region, 'Auto Scaling Group Creation Result: ', result)
+    ag = autoscale_conn.create_auto_scaling_group(AutoScalingGroupName='pywebdev_as_group',
+                              AvailabilityZones=azs[region],
+                              LaunchConfigurationName='pywebdev_launch_config', MinSize=1, MaxSize=1)
+    print(region, 'Auto Scaling Group Creation Result: ', ag['ResponseMetadata']['HTTPStatusCode'])
