@@ -15,26 +15,25 @@ for region in regions:
     print(region, " PyWebDev AS Group: ", ag)
 
     # Once the instances have been shutdown, you can delete the autoscale group:
-    print('Shutting down instances')
+    print('Shutting down instances for ag: ', ag)
     ag.shutdown_instances()
     time.sleep(60)
-    print('Deleting ASG')
+    print('Deleting ASG', ag)
     try:
         ag.delete()
-    except BotoServerError as e:
-        if e.response['Error']['Code'] == "ScalingActivityInProgress":
-            print("Scaling activity already in process, retrying")
-            retries = 3
-            for i in range(retries):
-                try:
-                    time.sleep(30)
-                    ag.delete()
-                except ResponseError as e:
-                    if i < retries - 1:
-                        continue
-                    else:
-                        raise
-                break
+    except:
+        print("Scaling activity already in process, retrying")
+        retries = 3
+        for i in range(retries):
+            try:
+                time.sleep(30)
+                ag.delete()
+            except:
+                if i < retries - 1:
+                    continue
+                else:
+                    raise
+            break
 
         else:
             print("Unexpected error: {}".format(e))
