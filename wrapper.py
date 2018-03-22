@@ -1,3 +1,5 @@
+#!/usr/bin/python -p
+
 import time
 import boto3
 import sys

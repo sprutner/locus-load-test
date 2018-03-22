@@ -3,11 +3,11 @@ import resource
 
 resource.setrlimit(resource.RLIMIT_NOFILE, (999999, 999999))
 
-def login(l):
-    l.client.post("/login", {"username":"ellen_key", "password":"education"})
-
-def logout(l):
-    l.client.post("/logout", {"username":"ellen_key", "password":"education"})
+# def login(l):
+#     l.client.post("/login", {"username":"ellen_key", "password":"education"})
+#
+# def logout(l):
+#     l.client.post("/logout", {"username":"ellen_key", "password":"education"})
 
 def index(l):
     l.client.get("/")

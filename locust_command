@@ -1,1 +1,0 @@
-locust --no-web -c 10000 -r 100 --host http://yahoo.com --csv=foobar
