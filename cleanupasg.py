@@ -1,7 +1,8 @@
 import boto.ec2.autoscale
 import time
 
-regions = ['us-east-1', 'us-west-1', 'ap-south-1']
+# regions = ['us-east-1', 'us-west-1', 'ap-south-1']
+regions = ['us-west-1']
 
 for region in regions:
     autoscale_conn = boto.ec2.autoscale.connect_to_region(region)

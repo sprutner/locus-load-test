@@ -1,18 +1,24 @@
-from flask import Flask
+from flask import Flask, request
 import flask
 import time
 import subprocess
+import boto3
 app = Flask(__name__)
 
 @app.route("/")
 def main():
     return '''<h1>Load testing control center</h1>
         <form action="/activate" method="post">
+            Target URL: <input type="text" name="url"><br>
             <input type="submit" value="Activate">
             '''
 
 @app.route("/activate", methods=["POST"])
 def index():
+    url = request.form.get('url')
+    from sqs import sendMessage
+    sendMessage(url)
+
     def inner():
         proc = subprocess.Popen(
             ['python autoscale.py'],             #call something with a lot of output so we can see it
