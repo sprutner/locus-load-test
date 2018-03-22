@@ -10,14 +10,21 @@ def main():
     return '''<h1>Load testing control center</h1>
         <form action="/activate" method="post">
             Target URL: <input type="text" name="url"><br>
+            Number of users: <input type="text" name="users"<br>
+            Hatch rate (users spawned per second): <input type="text" name="hatchrate"<br>
+            Run Time (e.g. 1h30m): <input type="text" name="runtime"<br>
             <input type="submit" value="Activate">
             '''
 
 @app.route("/activate", methods=["POST"])
 def index():
     url = request.form.get('url')
+    users = request.form.get('users')
+    hatchrate = request.form.get('hatchrate')
+    runtime = request.form.get('runtime')
+
     from sqs import sendMessage
-    sendMessage(url)
+    sendMessage('{"url": "%s", "users": "%s", "hatchrate": "%s", "runtime": "%s"}' % (url, users, hatchrate, runtime))
 
     def inner():
         proc = subprocess.Popen(
