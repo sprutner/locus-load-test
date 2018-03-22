@@ -11,4 +11,5 @@ export AWS_DEFAULT_REGION="`echo \"$EC2_AVAIL_ZONE\" | sed -e 's:\([0-9][0-9]*\)
 export EC2_INSTANCE_ID=$(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id)
 cd /home/ubuntu/locus-load-test
 python /home/ubuntu/locus-load-test/wrapper.py
-aws s3 cp /home/ubuntu/locus-load-test/foobar_requests.csv s3://sizzlertest/requests-$EC2_INSTANCE_ID.csv
+aws s3 cp /home/ubuntu/locus-load-test/foobar_requests.csv s3://sizzlertest/$AWS_DEFAULT_REGION-$EC2_INSTANCE_ID-requests.csv
+aws s3 cp /home/ubuntu/locus-load-test/foobar_distribution.csv s3://sizzlertest/$AWS_DEFAULT_REGION-$EC2_INSTANCE_ID-distribution.csv

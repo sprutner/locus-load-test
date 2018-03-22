@@ -13,18 +13,27 @@ def main():
             Number of users: <input type="text" name="users"<br>
             Hatch rate (users spawned per second): <input type="text" name="hatchrate"<br>
             Run Time (e.g. 1h30m): <input type="text" name="runtime"<br>
+
+            <h3>Regions</h3>
+            us-east-1 <input type="checkbox" name="regions" value="us-east-1" checked><br>
+            us-west-1 <input type="checkbox" name="regions" value="us-west-1" checked><br>
+            ap-south-1 <input type="checkbox" name="regions" value="ap-south-1" checked><br>
+
             <input type="submit" value="Activate">
             '''
 
 @app.route("/activate", methods=["POST"])
 def index():
+    regions = request.form.getlist('regions')
+    print(regions)
     url = request.form.get('url')
     users = request.form.get('users')
     hatchrate = request.form.get('hatchrate')
     runtime = request.form.get('runtime')
 
-    from sqs import sendMessage
-    sendMessage('{"url": "%s", "users": "%s", "hatchrate": "%s", "runtime": "%s"}' % (url, users, hatchrate, runtime))
+    for region in regions:
+        from sqs import sendMessage, createQueue
+        sendMessage('{"url": "%s", "users": "%s", "hatchrate": "%s", "runtime": "%s"}' % (url, users, hatchrate, runtime), region=region)
 
     def inner():
         proc = subprocess.Popen(
