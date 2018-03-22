@@ -15,11 +15,11 @@ def index(l):
 class UserBehavior(TaskSet):
     tasks = {index: 2}
 
-    def on_start(self):
-        login(self)
-
-    def on_stop(self):
-        logout(self)
+    # def on_start(self):
+    #     login(self)
+    #
+    # def on_stop(self):
+    #     logout(self)
 
 class WebsiteUser(HttpLocust):
     task_set = UserBehavior
