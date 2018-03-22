@@ -15,6 +15,15 @@ InstanceProfile=sys.argv[0]
 # 2. Autoscale Group
 # 3. Triggers
 
+# Create SQS Queue
+
+sqs = boto3.resource('sqs')
+try:
+    queue = sqs.create_queue(QueueName='locust', Attributes={'DelaySeconds': '1'})
+except ClientError as e:
+    print ("Queue already exists", e)
+
+# Create LCs
 for region in regions:
     autoscale_conn = boto3.client('autoscaling',region_name=region)
     # First setup a Launch Configuration
@@ -34,6 +43,7 @@ for region in regions:
     print(region, ' Launch Configuration Creation Result: ', lc['ResponseMetadata']['HTTPStatusCode'])
     f.close()
 
+# Create ASGs
 for region in regions:
     autoscale_conn = boto3.client('autoscaling',region_name=region)
     # Now we have a Launch Configuration and an ELB.  Create and launch the AutoScalingGroup
