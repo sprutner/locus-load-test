@@ -28,6 +28,8 @@ AWS_SECRET_ACCESS_KEY=securepassword```
 -- Terraform templating would solve this Issues
 - Boot time can be faster
 -- Packerifying AMIs would be ideal.
+- us-east-1 pip intermittent install issue
+-- Packerifying would solve
 - Autoscaling policies not yet created
 -- Need to determine best thresholds. CPU usage for this application may not be appropriate, logic on the amount of users and the instance size is probably a better indication of resource needs and triggering a scaling action
 - Distributed mode not being utilized
