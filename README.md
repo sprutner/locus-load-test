@@ -13,10 +13,29 @@ run `python cleanup.py` when finished to delete resources
 
 ### Pre-requisties ###
 
--need to create key_pair per region
--specify a bucket name and then hardcode it in files/userdata.txt
--iam instance profile with s3 and sqs permission for as
--AWS credentials must be set locally with with .credentials file or environment variables:
++ Need to create key_pair per region
++ Specify a bucket name and then hardcode it in files/userdata.txt
++ IAM instance profile with s3 and sqs permissions. e.g.:
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "sqs:*"
+            ],
+            "Resource": [
+                "arn:aws:sqs:*:723964265010:locust",
+                "arn:aws:s3:::sizzlertest/*"
+            ]
+        }
+```
++ Hardcode bucket name into IAM permissions
++ Hardcode IAM Instance profile into autoscale.py launch-config
++ AWS credentials must be set locally with with .credentials file or environment variables:
 e.g.
 
 ```
