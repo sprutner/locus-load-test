@@ -51,3 +51,10 @@ for region in regions:
     lc.delete()
 
 # Delete SQS queues
+for region in regions:
+    sqs = boto3.client('sqs', region_name=region)
+    try:
+        queue = sqs.delete_queue(QueueName=Q)
+        print('{} Queue: {} Deleted'.format(region, Q))
+    except ClientError as e:
+        print ("Queue does not exist", e)

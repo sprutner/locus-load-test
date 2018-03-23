@@ -19,13 +19,13 @@ Q='locust'
 # Create SQS Queue
 
 
-for region in regions:
-    sqs = boto3.client('sqs', region_name=region)
-    try:
-        queue = sqs.create_queue(QueueName=Q, Attributes={'DelaySeconds': '1'})
-        print('Queue: {} Created'.format(Q))
-    except ClientError as e:
-        print ("Queue already exists", e)
+# for region in regions:
+#     sqs = boto3.client('sqs', region_name=region)
+#     try:
+#         queue = sqs.create_queue(QueueName=Q, Attributes={'DelaySeconds': '1'})
+#         print('Queue: {} Created'.format(Q))
+#     except ClientError as e:
+#         print ("Queue already exists", e)
 
 # Create LCs
 for region in regions:

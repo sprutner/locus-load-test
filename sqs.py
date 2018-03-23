@@ -1,16 +1,17 @@
 import boto3
 import json
+from botocore.exceptions import ClientError
 
 sqs = boto3.resource('sqs')
-
+Q = 'locust'
 # Get queue
-def createQueue():
-    # Create the queue. This returns an SQS.Queue instance
-    queue = sqs.create_queue(QueueName='locust', Attributes={'DelaySeconds': '5'})
-
-    # You can now access identifiers and attributes
-    print(queue.url)
-    print(queue.attributes.get('DelaySeconds'))
+def createQueue(region):
+    sqs = boto3.client('sqs', region_name=region)
+    try:
+        queue = sqs.create_queue(QueueName=Q, Attributes={'DelaySeconds': '1'})
+        print('Queue: {} Created'.format(Q))
+    except ClientError as e:
+        print ("Queue already exists", e)
 
 def sendMessage(url, region):
     sqs = boto3.client('sqs', region_name=region)

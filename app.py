@@ -33,6 +33,7 @@ def index():
 
     for region in regions:
         from sqs import sendMessage, createQueue
+        createQueue(region)
         sendMessage('{"url": "%s", "users": "%s", "hatchrate": "%s", "runtime": "%s"}' % (url, users, hatchrate, runtime), region=region)
 
     def inner():
