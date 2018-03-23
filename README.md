@@ -40,7 +40,8 @@ e.g.
 
 ```
 AWS_ACCESS_KEY_ID=access-key
-AWS_SECRET_ACCESS_KEY=securepassword```
+AWS_SECRET_ACCESS_KEY=securepassword
+```
 
 ### Issues / To Do ###
 - Hardcoded S3 bucket URI in user-data script.
