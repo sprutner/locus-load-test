@@ -33,3 +33,4 @@ AWS_SECRET_ACCESS_KEY=securepassword```
 - Distributed mode not being utilized
 -- With autoscaling implementation, logic can be added to the SQS message to tell locust to enter distributed mode and wait for x server to come up before it runs its requests
 - Boto3 not fully being used in cleanup script
+- Speed up cleanup
