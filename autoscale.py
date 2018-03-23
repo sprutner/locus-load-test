@@ -2,30 +2,19 @@ import boto3
 from botocore.exceptions import ClientError
 import sys
 
+# Lots of hardcoded variables that can be refactored out
 regions = ['us-east-1', 'us-west-1', 'ap-south-1']
-# regions = ['us-west-1']
 amis = {'us-east-1': 'ami-43a15f3e', 'us-west-1': 'ami-925144f2', 'ap-south-1': 'ami-0189d76e'}
 azs = {'us-east-1': ['us-east-1a', 'us-east-1b', 'us-east-1c'], 'us-west-1': ['us-west-1b', 'us-west-1c'], 'ap-south-1':['ap-south-1a', 'ap-south-1b']}
 launch_configuration_name="pywebdev_launch_config"
 asg_name="pywebdev_as_group"
 InstanceProfile=sys.argv[0]
 Q='locust'
-# 3 Core Concepts
-#
+
 # 1. Launch Configuration
 # 2. Autoscale Group
 # 3. Triggers
 
-# Create SQS Queue
-
-
-# for region in regions:
-#     sqs = boto3.client('sqs', region_name=region)
-#     try:
-#         queue = sqs.create_queue(QueueName=Q, Attributes={'DelaySeconds': '1'})
-#         print('Queue: {} Created'.format(Q))
-#     except ClientError as e:
-#         print ("Queue already exists", e)
 
 # Create LCs
 for region in regions:

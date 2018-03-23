@@ -38,7 +38,7 @@ def index():
 
     def inner():
         proc = subprocess.Popen(
-            ['python autoscale.py'],             #call something with a lot of output so we can see it
+            ['python autoscale.py'],
             shell=True,
             universal_newlines=True,
             stdout=subprocess.PIPE
@@ -48,8 +48,7 @@ def index():
             time.sleep(1)                           # Don't need this just shows the text streaming
             yield line.rstrip() + '<br/>\n'
 
-    return flask.Response(inner(), mimetype='text/html')  # text/html is required for most browsers to show th$
-    # import autoscale
+    return flask.Response(inner(), mimetype='text/html')
 
 if __name__ == "__main__":
     app.run()
